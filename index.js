@@ -23,10 +23,18 @@ exports.handler = async (event) => {
     body: JSON.stringify(event),
   };
 
+  
+  if (method === "GET" && path === "/todos") {
+    response = {
+      statusCode: 200,
+      body: JSON.stringify({ message: "All todos", todos: todos }),
+    };
+  }
+
+
+  
   if (method === "GET" && path === "/todo") {
-    const foundTodo = todos.filter(
-      (todo) => todo.id === parseInt(queryParams.id)
-    );
+    const foundTodo = todos.filter( (todo) => todo.id === parseInt(queryParams.id) );
 
     if (foundTodo) {
       response = {
@@ -44,12 +52,7 @@ exports.handler = async (event) => {
     }
   }
 
-  if (method === "GET" && path === "/todos") {
-    response = {
-      statusCode: 200,
-      body: JSON.stringify({ message: "All todos", todos: todos }),
-    };
-  }
+
 
   if (method === "POST" && path === "/todo") {
     const { task } = JSON.parse(event.body);
@@ -78,10 +81,10 @@ exports.handler = async (event) => {
     }
   }
 
+
+  
   if (method === "PUT" && path === "/update") {
-    const updateTodo = todos.find(
-      (todo) => todo.id === parseInt(queryParams.id)
-    );
+    const updateTodo = todos.find( (todo) => todo.id === parseInt(queryParams.id) );
 
     if (updateTodo) {
       updateTodo.done = !updateTodo.done;
@@ -101,16 +104,13 @@ exports.handler = async (event) => {
     }
   }
 
+
+  
   if (method === "DELETE" && path === "/remove") {
-    const foundTodo = todos.find(
-      (todo) => todo.id === parseInt(queryParams.id)
-    );
+    const foundTodo = todos.find( (todo) => todo.id === parseInt(queryParams.id) );
 
     if (foundTodo) {
-      const indexPosition = todos.findIndex(
-        (todoItem) => todoItem === foundTodo
-      );
-
+      const indexPosition = todos.findIndex( (todoItem) => todoItem === foundTodo );
       const removed = todos.splice(indexPosition, 1);
 
       response = {
